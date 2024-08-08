@@ -156,7 +156,6 @@ def calc_sing_pdb(pdb_file_name,pH=5,TP=True,TP_pred=None,ML=True,test=False):
            # Predictions for each atom
             atom_feats = prepare_data_for_atom(feats, atom)
             
-            
             r0 = joblib.load(ML_MODEL_PATH + "%s_R0.sav" % atom)
 
             atom_feats.fillna(0, inplace=True)
@@ -249,3 +248,4 @@ if __name__ == "__main__":
     
     print("Complete!")
    
+

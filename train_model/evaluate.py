@@ -126,7 +126,7 @@ for model in ["X", "Y", "UCBShift"]:
     print("Model:", model)
     all_preds = pd.concat(preds[model])
     
-    for atom in ['CG','CD1','CG2','CD','CG1','CD2','CE','CE1','CE2','CZ','CZ2','CH2','CE3','CZ3','HB2','HB3','HG2','HB','HD2','HG3','HD1','HD3','HE2','HG','HE1','HE3','HG12','HG13','HG1','HD21','HD22','HE','HE21','HE22','HZ','HZ2','HH2','HZ3','ND2','NE2','NE1']:
+    for atom in ['C','CA','CB','CG','CD1','CG2','CD','CG1','CD2','CE','CE1','CE2','CZ','CZ2','CH2','CE3','CZ3','H','HA','HB2','HB3','HG2','HB','HD2','HG3','HD1','HD3','HE2','HG','HE1','HE3','HG12','HG13','HG1','HD21','HD22','HE','HE21','HE22','HZ','HZ2','HH2','HZ3','N','ND2','NE2','NE1']:
         print(atom + "_RMSE:", toolbox.rmse(all_preds[atom + "_DIFF"]))
         valid = all_preds[atom + "_DIFF"].notnull()
         print(atom + "_CORR:", np.corrcoef(all_preds[valid][atom + "_PRED"], all_preds[valid][atom])[0,1])

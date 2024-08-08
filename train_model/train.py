@@ -20,7 +20,7 @@ from data_prep_functions import *
 
 
 K = 10
-PARALLEL_JOBS = 10
+PARALLEL_JOBS = 16
 DEBUG = False
 rmse = lambda x: np.sqrt(np.mean(np.square(x)))
 
@@ -159,7 +159,11 @@ def prepare_data_for_atom(data,atom):
     rem7 = [rm_atom + "_COS_A" for rm_atom in ['HB', 'HB1', 'HB2', 'HB3', 'HD1', 'HD2', 'HD21', 'HD22', 'HD3', 'HE', 'HE1', 'HE2', 'HE21', 'HE22', 'HG', 'HG1', 'HG12', 'HG13', 'HG2', 'HG3', 'HZ', 'HD11', 'HD12', 'HD13', 'HD23', 'HE3','HZ3','HH2','HZ2', 'HZ1', 'HG21', 'HG22', 'HG23', 'HG'] if rm_atom != atom]
     rem8 = [rm_atom + "_EXISTS" for rm_atom in ['HB', 'HB1', 'HB2', 'HB3', 'HD1', 'HD2', 'HD21', 'HD22', 'HD3', 'HE', 'HE1', 'HE2', 'HE21', 'HE22', 'HG', 'HG1', 'HG12', 'HG13', 'HG2', 'HG3', 'HZ','HD11', 'HD12', 'HD13', 'HD23', 'HE3','HZ3','HH2','HZ2', 'HZ1', 'HG21', 'HG22', 'HG23', 'HG'] if rm_atom != atom]
     rem9 = [rm_atom + "_ENERGY" for rm_atom in ['HB', 'HB1', 'HB2', 'HB3', 'HD1', 'HD2', 'HD21', 'HD22', 'HD3', 'HE', 'HE1', 'HE2', 'HE21', 'HE22', 'HG', 'HG1', 'HG12', 'HG13', 'HG2', 'HG3', 'HZ','HD11', 'HD12', 'HD13', 'HD23', 'HE3','HZ3','HH2','HZ2', 'HZ1', 'HG21', 'HG22', 'HG23', 'HG'] if rm_atom != atom]
-    dat = dat.drop(rem1 + rem2 + rem3 + rem4 + rem5 + rem6 + rem7 + rem8 + rem9, axis=1, errors='ignore')
+    
+    rem10 = toolbox.ATOMS.copy() 
+    rem10.remove(atom)
+    
+    dat = dat.drop(rem1 + rem2 + rem3 + rem4 + rem5 + rem6 + rem7 + rem8 + rem9 + rem10, axis=1, errors='ignore')
     
     hbondd_sidechain_cols = [i+j for i in ['HB', 'HB1', 'HB2', 'HB3', 'HD1', 'HD2', 'HD21', 'HD22', 'HD3', 'HE', 'HE1', 'HE2', 'HE21', 'HE22', 'HG', 'HG1', 'HG12', 'HG13', 'HG2', 'HG3', 'HZ','HD11', 'HD12', 'HD13', 'HD23', 'HE3','HZ3','HH2','HZ2', 'HZ1', 'HG21', 'HG22', 'HG23']  for j in ['_dHA', '_COS_H', '_COS_A']]
     hbondd_sidechain_cols = [element for element in hbondd_sidechain_cols if element.startswith(atom + '_')]
@@ -279,7 +283,11 @@ def train_for_atom(atom, dataset):
     '''
     print("  ======  Training model for:",atom, "  ======  ")
     single_atom_data = prepare_data_for_atom(train_data, atom)
+    print(single_atom_data.columns.tolist())
     features,targets,metas = prep_feat_target(single_atom_data,atom,"train",filter_outlier=False,notnull=True)
+    
+    print(features.columns.tolist())
+    
     kf=KFold(n_splits=K,shuffle=True)
     # Prepare parameters for Kfold in a list and do "out-of-sample" training and testing on training dataset for K folds
     print("Training R0 to provide OOB predictions as features for R1 and R2...")
