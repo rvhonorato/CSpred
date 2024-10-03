@@ -283,10 +283,9 @@ def train_for_atom(atom, dataset):
     '''
     print("  ======  Training model for:",atom, "  ======  ")
     single_atom_data = prepare_data_for_atom(train_data, atom)
-    print(single_atom_data.columns.tolist())
+    #print(single_atom_data.columns.tolist())
     features,targets,metas = prep_feat_target(single_atom_data,atom,"train",filter_outlier=False,notnull=True)
     
-    print(features.columns.tolist())
     
     kf=KFold(n_splits=K,shuffle=True)
     # Prepare parameters for Kfold in a list and do "out-of-sample" training and testing on training dataset for K folds

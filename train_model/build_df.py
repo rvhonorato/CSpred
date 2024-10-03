@@ -22,7 +22,7 @@ from Bio import BiopythonWarning
 warnings.simplefilter('ignore', BiopythonWarning)
 import pickle
 import multiprocessing
-WORKER_COUNT=4
+WORKER_COUNT=10
 import random
 
 pynmrstar.ALLOW_V2_ENTRIES = True
@@ -401,7 +401,6 @@ if __name__=="__main__":
     #############Parallel execute whole building
     pool=multiprocessing.Pool(processes=WORKER_COUNT)
     
-
     seq_alignment_dict_list = [dict() for i in range(WORKER_COUNT)]
     keys_to_pop = ['11013.3ERR','15388.1WRK', 'malate.1D8C', '4083.1JBE']
     for key in keys_to_pop:
@@ -464,7 +463,6 @@ if __name__=="__main__":
             worker_idx+=1
     pool.map(build_shiftx2, pdb_to_shift_dict_old_list)
     print("Finishes shiftx2 data")
-
 
 
 
