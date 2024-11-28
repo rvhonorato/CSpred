@@ -1,4 +1,5 @@
-models/*
+models/*sav
+models/*tgz
 __pycache__/*
 
 refDB/pdbs/*
